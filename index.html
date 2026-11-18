@@ -9,7 +9,17 @@ canvas{width:100%;height:100%;display:block;touch-action:none}
 .overlay{position:fixed;z-index:3;inset:0;display:grid;place-items:center;background:linear-gradient(transparent,#050d1ba6 28%,#050d1b77 65%,transparent);pointer-events:none}.intro{width:min(550px,88vw);text-align:center;pointer-events:auto;padding:30px 10px}.intro h1{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-size:clamp(45px,7vw,80px);font-weight:650;line-height:.98;letter-spacing:-.05em;margin:20px auto;color:#e6fbf6;max-width:500px}.intro p{color:#9fbbca;font-size:13px;line-height:1.7;margin:15px 0 23px}.primary{border:1px solid #b8ffe3;background:#b8ffe3;color:#082521;border-radius:8px;font-weight:650;padding:13px 27px;font-size:13px}.intro .utility{margin-left:8px;padding:13px 18px}.keys{font-size:11px;color:#7ba2b6;margin-top:20px}.keys b{font-weight:500;color:#bed7e3;letter-spacing:.2em}
 .settings{position:fixed;z-index:5;right:25px;top:80px;max-height:80vh;overflow:auto;width:min(330px,calc(100vw - 30px));padding:22px;background:#0b1729f5;border:1px solid #2a4859;border-radius:16px;box-shadow:0 20px 70px #0008}.settings header{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}.settings h2{font-size:16px;margin:0;font-weight:500}.settings label{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:12px;color:#acc7d1;margin:18px 0}.settings input[type=range]{width:135px;accent-color:#a3f2d8}.settings select{max-width:150px;color:#d5f8ed;background:#102839;border:1px solid #426274;border-radius:6px;padding:7px;font-size:11px}.settings details{font-size:10px;line-height:1.7;color:#789bad;margin-top:24px}.settings summary{cursor:pointer;color:#9abfca}.settings a{color:#b7d8e0}
 @media(max-width:650px){.hud{inset:16px 15px auto;grid-template-columns:1fr 1fr;gap:15px}.identity{grid-column:1 / 3;grid-row:1;text-align:left}.brand{font-size:12px}.identity p{margin:5px 0}.score{grid-row:2;gap:22px}.metric strong{font-size:21px}.toolbar{grid-row:2}.utility{padding:7px 9px;font-size:10px}.scene-status{left:15px;bottom:138px;font-size:9px}.scene-status strong{font-size:11px}.bottom{bottom:19px}.pads{gap:10px}.pad{height:51px}.settings{top:125px;right:15px}.feedback{top:64%;font-size:13px}.intro h1{font-size:53px}.intro{margin-top:-25px}.intro p{max-width:280px;margin:17px auto 24px}.intro .utility{margin:10px 0 0}}
-.text-button{border:0;background:transparent;color:#9dceca;font-size:11px;text-decoration:underline;text-underline-offset:4px;padding:6px;cursor:pointer}.share-actions{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:14px}.share-actions .utility{padding:9px 12px}.share-status{min-height:16px;margin:8px 0 0!important;font-size:11px!important;color:#b6f4d8!important}dialog{background:#0b192a;color:#e8fff6;border:1px solid #345c69;border-radius:18px;padding:38px 30px 24px;width:min(470px,92vw);box-shadow:0 25px 100px #0008}dialog::backdrop{background:#020712b8;backdrop-filter:blur(7px)}dialog h2{font-size:35px;font-weight:500;letter-spacing:-.04em;margin:18px 0 12px}dialog p{color:#9bbbc8;font-size:13px;line-height:1.6}dialog .dialog-close{position:absolute;right:16px;top:16px;font-size:10px}dialog form{margin-top:26px}dialog label{display:block;font-size:11px;color:#c4dce3;margin-bottom:8px}.signup-row{display:flex;gap:9px}.signup-row input{min-width:0;flex:1;background:#071321;color:#e3fff8;border:1px solid #3c5a69;border-radius:8px;padding:12px;font-size:13px}.signup-row input:focus{outline:2px solid #9debcf;outline-offset:2px}.signup-row .primary{padding:12px 19px}.signup-note{font-size:10px!important;color:#7597a7!important}#signupStatus{min-height:22px;font-size:12px;color:#b6f4d8;margin-bottom:0}</style></head>
+.text-button{border:0;background:transparent;color:#9dceca;font-size:11px;text-decoration:underline;text-underline-offset:4px;padding:6px;cursor:pointer}.share-actions{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:14px}.share-actions .utility{padding:9px 12px}.share-status{min-height:16px;margin:8px 0 0!important;font-size:11px!important;color:#b6f4d8!important}dialog{background:#0b192a;color:#e8fff6;border:1px solid #345c69;border-radius:18px;padding:38px 30px 24px;width:min(470px,92vw);box-shadow:0 25px 100px #0008}dialog::backdrop{background:#020712b8;backdrop-filter:blur(7px)}dialog h2{font-size:35px;font-weight:500;letter-spacing:-.04em;margin:18px 0 12px}dialog p{color:#9bbbc8;font-size:13px;line-height:1.6}dialog .dialog-close{position:absolute;right:16px;top:16px;font-size:10px}dialog form{margin-top:26px}dialog label{display:block;font-size:11px;color:#c4dce3;margin-bottom:8px}.signup-row{display:flex;gap:9px}.signup-row input{min-width:0;flex:1;background:#071321;color:#e3fff8;border:1px solid #3c5a69;border-radius:8px;padding:12px;font-size:13px}.signup-row input:focus{outline:2px solid #9debcf;outline-offset:2px}.signup-row .primary{padding:12px 19px}.signup-note{font-size:10px!important;color:#7597a7!important}#signupStatus{min-height:22px;font-size:12px;color:#b6f4d8;margin-bottom:0}</style><style id="ocean-visual-refresh">
+html,body{background:#031321;color:#e9fbff}
+.stage{background:radial-gradient(ellipse at 72% 7%,#1b79915c,transparent 30%),radial-gradient(ellipse at 44% 35%,#0b344d99,transparent 53%),radial-gradient(ellipse at 5% 70%,#102d465e,transparent 43%),linear-gradient(180deg,#031829 0%,#041421 56%,#030a18 100%)}
+.hud{inset:20px 2.5vw auto;align-items:start;gap:12px}.score{gap:28px}.metric span{color:#9bb9c8;letter-spacing:.13em}.metric strong{font-family:Georgia,serif;font-size:24px;color:#d8f6ff;text-shadow:0 0 12px #71dcff8a}
+.identity{padding-top:1px}.brand{font-family:Georgia,serif;font-weight:400;font-size:15px;letter-spacing:.19em;color:#f0fcff;text-shadow:0 0 15px #72dfff80}.identity p{color:#91bdcf;font-size:10px}
+.toolbar{gap:9px}.utility{border:1px solid #9bd9ee75;background:#071b2cbb;border-radius:999px;padding:8px 15px;color:#d9f4ff;backdrop-filter:blur(8px)}.utility:hover{border-color:#b9f5ff;background:#164052}
+.bottom{bottom:1.5vh;width:min(780px,92vw)}.pads{gap:16px;margin:0 0 8px}.pad{position:relative;height:66px;border:0;border-radius:999px;background:transparent;padding:34px 0 0;color:#eafcff;font-size:15px;letter-spacing:.04em;text-shadow:0 0 10px var(--color);overflow:visible}.pad::before{content:"";position:absolute;top:2px;left:17%;right:17%;height:19px;border:1.5px solid var(--color);border-radius:50%;box-shadow:0 0 12px color-mix(in srgb,var(--color) 45%,transparent),inset 0 0 10px color-mix(in srgb,var(--color) 18%,transparent)}.pad::after{content:"";position:absolute;z-index:-1;left:50%;bottom:0;width:34px;height:29px;transform:translateX(-50%);border:1px solid color-mix(in srgb,var(--color) 75%,transparent);border-radius:8px;background:#061b2a99}.pad.active{background:transparent}.pad.active::before{background:color-mix(in srgb,var(--color) 22%,transparent);box-shadow:0 0 25px color-mix(in srgb,var(--color) 70%,transparent),inset 0 0 12px color-mix(in srgb,var(--color) 38%,transparent)}
+.bottom progress{height:3px;background:#86d9e733}.bottom progress::-webkit-progress-bar{background:#86d9e733;border-radius:99px}.bottom progress::-webkit-progress-value{background:linear-gradient(90deg,#7cf5e6,#93e8ff);box-shadow:0 0 10px #58e9ff;border-radius:99px}.bottom p{color:#8baebe;font-size:10px;letter-spacing:.13em}
+.scene-status{color:#8bb7c8;bottom:22px}.scene-status strong{color:#b7f3ed}.feedback{color:#e0fff7;text-shadow:0 0 13px #64f2d9}.intro h1{font-family:Georgia,serif;font-weight:400;letter-spacing:-.035em}.primary{border-radius:999px;background:#c5fff0;color:#052426;box-shadow:0 0 22px #94ffe955}
+@media(max-width:650px){.hud{inset:14px 14px auto;gap:10px}.score{gap:15px}.metric span{font-size:8px}.metric strong{font-size:19px}.brand{font-size:12px}.toolbar{gap:5px}.utility{padding:7px 10px}.bottom{bottom:15px}.pads{gap:6px}.pad{height:61px}.scene-status{bottom:133px}}
+</style></head>
 <body>
 <div class="stage"><canvas id="reef" aria-label="Four neon rhythm lanes. Press D, F, J, K or tap a lane as an echo reaches its glowing hit zone. Correct hits sing a sampled humpback harmony and refine a transparent whale and reef."></canvas></div>
 <header class="hud">
@@ -462,7 +472,7 @@ function branch(a,b,r,color){
 const pieces = Array.from({length:16},(_,i)=>{
   mesh.length=0;
   const a=i*2.39996, r=i===0?0:.85+Math.sqrt(i)*.43;
-  const x=Math.cos(a)*r,z=Math.sin(a)*r, h=i===0?1.7:.46+(Math.sin(i*9)+1)*.42;
+  const x=-2.25+Math.cos(a)*r*1.14,z=.15+Math.sin(a)*r*1.08, h=i===0?1.7:.46+(Math.sin(i*9)+1)*.42;
   rock(x,-1.1,z,i===0?.92:.49+(i%3)*.08,h,stones);
   const start=[x,h-1.12,z], top=[x+.13,h-.29+(i%4)*.13,z+.09], color=coral[i%4];
   branch(start,top,.085,color);
@@ -475,7 +485,7 @@ const pieces = Array.from({length:16},(_,i)=>{
   }
   return [...mesh];
 });
-mesh.length=0; rock(0,-1.51,0,3.06,.41,['#142d45','#1c354e','#29485d','#182e45']);
+mesh.length=0; rock(-2.25,-1.51,.15,3.06,.41,['#142d45','#1c354e','#29485d','#182e45']);
 const floor=[...mesh];
 // Build a whale volume from elliptical rings, then join neighboring rings.
 mesh.length = 0;
@@ -485,7 +495,7 @@ const whaleRings = [
   [.95,.37,.40],[1.25,.27,.34],[1.45,.16,.25],[1.55,.045,.09]
 ].map(([x,ry,rz])=>Array.from({length:16},(_,j)=>{
   const a=j*Math.PI/8;
-  return [x,.78+Math.cos(a)*ry,.15+Math.sin(a)*rz];
+  return [x*1.2,.8+x*.15+Math.cos(a)*ry,.15+Math.sin(a)*rz];
 }));
 for(let i=0;i<whaleRings.length-1;i++){
   for(let j=0;j<16;j++){
@@ -504,6 +514,14 @@ flipper([.25,.65,.48],[-.65,.12,1.68],[.56,.52,.62],'#75a8b9');
 flipper([-2.25,.8,.16],[-2.85,.98,-.68],[-1.89,.91,-.43],'#70a5b9');
 flipper([-2.25,.8,.16],[-2.85,.98,.98],[-1.89,.91,.75],'#87b5c4');
 flipper([-.95,1.03,.15],[-1.19,1.44,.15],[-.54,1.15,.15],'#6c98ac');
+// Broad swept tail flukes and pleats make the whale read clearly in wireframe.
+flipper([-2.55,.46,.15],[-3.18,.34,-.72],[-2.69,.56,.02],'#77aebd');
+flipper([-2.55,.46,.15],[-3.18,.34,1.02],[-2.69,.56,.28],'#8ac2ce');
+function detailLine(points,color,width=.025){for(let i=0;i<points.length-1;i++)branch(points[i],points[i+1],width,color)}
+detailLine([[-.9,.62,.26],[-.45,.51,.31],[0,.47,.34],[.45,.49,.34],[.85,.55,.3]],'#a9d5dd',.018);
+detailLine([[-.86,.55,.34],[-.42,.43,.38],[.02,.4,.4],[.48,.43,.38],[.84,.49,.34]],'#7fc0d0',.014);
+function eye(x,y,z){const ring=[];for(let i=0;i<=12;i++){const a=i*Math.PI/6;ring.push([x+Math.cos(a)*.045,y+Math.sin(a)*.045,z])}detailLine(ring,'#d9ffff',.012)}
+eye(1.05,1.01,.36);
 const whaleMesh=[...mesh];
 
 // Keep a hierarchy of real mesh edges. Correct hits reveal more surface
@@ -521,6 +539,7 @@ function scanOrder(face){
   return center[1]+.16*center[0]+.07*center[2];
 }
 baseTriangles.sort((a,b)=>scanOrder(a)-scanOrder(b));
+baseTriangles.forEach((face,i)=>face.fillThreshold=i/Math.max(1,baseTriangles.length-1));
 const edgeMap=new Map();
 const pointKey=point=>point.map(value=>value.toFixed(4)).join(',');
 function addMeshEdge(a,b,threshold,level,color){
@@ -617,7 +636,16 @@ function draw(now){
   const active=meshEdges.filter(edge=>reconstruction>0 && edge.threshold<=reconstruction);
   const detail=reconstruction<.23?'coarse':reconstruction<.55?'refining':'fine';
   by('meshStatus').textContent=active.length.toLocaleString()+' edges · '+detail;
-  // Draw both front and back edges. There are no opaque surface fills.
+  // Reveal translucent surfaces one face at a time as harmonies are played.
+  for(const face of baseTriangles){
+    if(reconstruction<=face.fillThreshold)continue;
+    const points=face.points.map(project),fade=clamp((reconstruction-face.fillThreshold)*18);
+    ctx.globalAlpha=.16*fade;ctx.fillStyle=face.color;
+    ctx.beginPath();ctx.moveTo(points[0][0],points[0][1]);
+    for(let i=1;i<points.length;i++)ctx.lineTo(points[i][0],points[i][1]);
+    ctx.closePath();ctx.fill();
+  }
+  // Draw the fine wire edges over the newly filled 3D surfaces.
   for(const edge of active){
     if(edge.born<0)edge.born=now;
     const age=(now-edge.born)/1000;
