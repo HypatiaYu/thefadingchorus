@@ -19,10 +19,24 @@ html,body{background:#031321;color:#e9fbff}
 .bottom progress{height:3px;background:#86d9e733}.bottom progress::-webkit-progress-bar{background:#86d9e733;border-radius:99px}.bottom progress::-webkit-progress-value{background:linear-gradient(90deg,#7cf5e6,#93e8ff);box-shadow:0 0 10px #58e9ff;border-radius:99px}.bottom p{color:#8baebe;font-size:10px;letter-spacing:.13em}
 .scene-status{color:#8bb7c8;bottom:22px}.scene-status strong{color:#b7f3ed}.feedback{color:#e0fff7;text-shadow:0 0 13px #64f2d9}.intro h1{font-family:Georgia,serif;font-weight:400;letter-spacing:-.035em}.primary{border-radius:999px;background:#c5fff0;color:#052426;box-shadow:0 0 22px #94ffe955}
 @media(max-width:650px){.hud{inset:14px 14px auto;gap:10px}.score{gap:15px}.metric span{font-size:8px}.metric strong{font-size:19px}.brand{font-size:12px}.toolbar{gap:5px}.utility{padding:7px 10px}.bottom{bottom:15px}.pads{gap:6px}.pad{height:61px}.scene-status{bottom:133px}}
+</style><style id="exploration-style">
+#explore{position:fixed;inset:0;z-index:1;background:#06243b;touch-action:none}#explore[hidden]{display:none!important}
+#exploreHud{position:fixed;z-index:2;top:105px;left:25px;color:#c7f6fa;font-size:13px;max-width:300px;line-height:1.6;pointer-events:none}#exploreHud[hidden]{display:none!important}
+body.exploring .bottom,body.exploring .scene-status{display:none}body.exploring #pause{display:none}
+@media(max-width:650px){#exploreHud{top:145px;left:15px;font-size:11px;max-width:230px}}
+</style><style id="rhythm-key-glow">
+/* GPU-friendly neon keys, with a brighter successful-hit pulse. */
+.pad{transition:color .12s ease,filter .12s ease;filter:drop-shadow(0 0 5px var(--color));text-shadow:0 0 7px var(--color),0 0 17px var(--color)}
+.pad::before{box-shadow:0 0 10px var(--color),0 0 22px color-mix(in srgb,var(--color) 45%,transparent),inset 0 0 10px color-mix(in srgb,var(--color) 28%,transparent)}
+.pad.active{filter:drop-shadow(0 0 12px var(--color));color:#fff}
+.pad.correct{animation:correctKeyGlow .44s ease-out both;color:#fff}
+.pad.correct::before{background:color-mix(in srgb,var(--color) 55%,transparent);box-shadow:0 0 15px var(--color),0 0 36px var(--color),0 0 55px color-mix(in srgb,var(--color) 60%,transparent),inset 0 0 16px #fff9}
+@keyframes correctKeyGlow{0%{filter:drop-shadow(0 0 6px var(--color));transform:scale(1)}30%{filter:drop-shadow(0 0 22px var(--color));transform:scale(1.09)}100%{filter:drop-shadow(0 0 6px var(--color));transform:scale(1)}}
+@media(prefers-reduced-motion:reduce){.pad.correct{animation:none}}
 </style></head>
 <body>
 <div class="stage"><canvas id="reef" aria-label="Four neon rhythm lanes. Press D, F, J, K or tap a lane as an echo reaches its glowing hit zone. Correct hits sing a sampled humpback harmony and refine a transparent whale and reef."></canvas></div>
-<header class="hud">
+<canvas id="explore" hidden aria-label="Explore Icelandic waters and meet another whale to begin the rhythm game"></canvas><div id="exploreHud" hidden>ICELAND · NORTH ATLANTIC<br>Steer with arrow keys / WASD, or drag on the ocean.<br><strong>Meet a glowing whale to begin the rhythm chorus.</strong></div><header class="hud">
 <div class="score"><div class="metric"><span>Score</span><strong id="score">0</strong></div><div class="metric"><span>Best</span><strong id="bestScore">0</strong></div><div class="metric"><span>Streak</span><strong id="streak">0</strong></div></div>
 <div class="identity"><div class="brand">The Fading Chorus</div><p id="phase" aria-live="polite">Chopin × humpback · 128 BPM</p></div>
 <nav class="toolbar" aria-label="Game controls"><button class="utility" id="pause" disabled>Pause</button><button class="utility" id="restart" disabled>Restart</button><button class="utility" id="sound" aria-pressed="false">Mute</button><button class="utility" id="updatesToggle">Updates</button><button class="utility" id="settingsToggle" aria-expanded="false" aria-controls="settings">Mix</button></nav>
@@ -33,7 +47,7 @@ html,body{background:#031321;color:#e9fbff}
 <div class="pads" aria-label="Rhythm lanes"><button class="pad" id="pad0" style="--color:#9ef9df" aria-label="Left lane, D">D</button><button class="pad" id="pad1" style="--color:#69bfff" aria-label="Center left lane, F">F</button><button class="pad" id="pad2" style="--color:#c9a0ff" aria-label="Center right lane, J">J</button><button class="pad" id="pad3" style="--color:#ff9dbb" aria-label="Right lane, K">K</button></div>
 <progress id="songProgress" max="100" value="0" aria-label="Song progress"></progress><p>D F J K · tap a lane · swipe through echoes</p>
 </div>
-<div class="overlay" id="overlay"><section class="intro"><span class="eyebrow">An ocean waiting to be heard</span><h1 id="overlayTitle">The Fading<br>Chorus</h1><p id="hint">Meet each echo at the light.<br>Restore the ocean, one harmony at a time.</p><button class="primary" id="start">Enter the chorus</button><button class="utility" id="listen" hidden>Hear your chorus</button><div class="share-actions" id="shareActions" hidden aria-label="Share your high score"><button class="utility" id="shareNative">Share…</button><button class="utility" id="shareFacebook">Facebook</button><button class="utility" id="shareX">X / Twitter</button><button class="utility" id="shareLinkedIn">LinkedIn</button><button class="utility" id="shareWhatsApp">WhatsApp</button><button class="utility" id="copyShare">Copy link</button></div><p class="share-status" id="shareStatus" role="status" aria-live="polite"></p><div style="margin-top:17px"><button class="text-button" id="introUpdates">Get updates on the chorus</button></div><div class="keys">Four lanes. <b>D F J K</b> &nbsp; Space to pause.</div></section></div>
+<div class="overlay" id="overlay"><section class="intro"><span class="eyebrow">An ocean waiting to be heard</span><h1 id="overlayTitle">The Fading<br>Chorus</h1><p id="hint">Explore the waters around Iceland. Meet another whale to unlock the four-lane rhythm chorus.</p><button class="primary" id="start">Explore Iceland</button><button class="utility" id="listen" hidden>Hear your chorus</button><div class="share-actions" id="shareActions" hidden aria-label="Share your high score"><button class="utility" id="shareNative">Share…</button><button class="utility" id="shareFacebook">Facebook</button><button class="utility" id="shareX">X / Twitter</button><button class="utility" id="shareLinkedIn">LinkedIn</button><button class="utility" id="shareWhatsApp">WhatsApp</button><button class="utility" id="copyShare">Copy link</button></div><p class="share-status" id="shareStatus" role="status" aria-live="polite"></p><div style="margin-top:17px"><button class="text-button" id="introUpdates">Get updates on the chorus</button></div><div class="keys">Four lanes. <b>D F J K</b> &nbsp; Space to pause.</div></section></div>
 <aside class="settings" id="settings" hidden aria-label="Audio and harmony settings"><header><h2>Your chorus</h2><button class="utility" id="closeSettings" aria-label="Close mix controls">Close</button></header>
 <label>Whales<input id="whaleVolume" type="range" min="0" max="100" value="80"></label><label>Techno beat<input id="beatVolume" type="range" min="0" max="100" value="65"></label><label>Piano<input id="musicVolume" type="range" min="0" max="100" value="40"></label>
 <label>Harmony<select id="harmony"><option value="third">Third above</option><option value="fifth">Fifth above</option><option value="octave">Octave</option></select></label><label>Orbit the ocean<input id="autoOrbit" type="checkbox" checked></label>
@@ -50,7 +64,7 @@ const reef=by('reef'),ctx=reef.getContext('2d');
 const laneColors=['#9ef9df','#69bfff','#c9a0ff','#ff9dbb'];
 const noteLanes=melodyLanes();
 function melodyLanes(){return [0,1,0,2,3,1,3,2,1,0,2,1,0,3,2,1,2,3,2,1,0,3,2,1,3,0]}
-const laneFlashes=[0,0,0,0],bursts=[],pointerTrail=[];
+const laneFlashes=[0,0,0,0],correctFlashes=[0,0,0,0],bursts=[],pointerTrail=[];
 // Melody of measures 43–50, without trills and grace notes.
 // MIDI pitches are one octave below the notated melody.
 // Each tuple holds a pitch and its duration in quarter-note beats.
@@ -95,8 +109,8 @@ function songTime(){
   if(mode === 'paused') return pauseAt;
   return audio ? audio.currentTime - audioZero : performance.now()/1000 - clockZero;
 }
-const bpmTime = i => lead + beats[i] * secondsPerBeat;
-const endTime = lead + beat * secondsPerBeat;
+const boardDuration = beat * secondsPerBeat;
+let boardNumber = 0, nextBoardToSchedule = 0;
 
 async function initAudio(){
   const Audio = window.AudioContext || window.webkitAudioContext;
@@ -179,7 +193,7 @@ function voice(midi, when, length, part = 'lead', variant = 0){
   pan.connect(musicBus);pan.connect(reverbSend);
   source.start(when);
   source.stop(when+length+release+.02);
-  voices.push(source);
+  trackVoice(source);
 }
 function chooseWhaleSample(target){
   let best;
@@ -218,7 +232,7 @@ function whaleHarmony(melodyPitch,when,noteLength){
   source.connect(warmth);warmth.connect(soften);soften.connect(gain);
   gain.connect(pan);pan.connect(whaleBus);
   source.start(when);source.stop(when+duration+.01);
-  voices.push(source);
+  trackVoice(source);
   const names=['C','D♭','D','E♭','E','F','G♭','G','A♭','A','B♭','B'];
   return names[match.midi%12]+(Math.floor(match.midi/12)-1);
 }
@@ -232,7 +246,7 @@ function kick(when){
   gain.gain.exponentialRampToValueAtTime(.72,when+.004);
   gain.gain.exponentialRampToValueAtTime(.0001,when+.39);
   oscillator.connect(gain);gain.connect(drumBus);
-  oscillator.start(when);oscillator.stop(when+.4);voices.push(oscillator);
+  oscillator.start(when);oscillator.stop(when+.4);trackVoice(oscillator);
 }
 function percussion(when,clap=false,open=false){
   const source=audio.createBufferSource(),filter=audio.createBiquadFilter(),gain=audio.createGain();
@@ -246,7 +260,7 @@ function percussion(when,clap=false,open=false){
   gain.gain.linearRampToValueAtTime(level,when+.002);
   gain.gain.exponentialRampToValueAtTime(.0001,when+duration);
   source.connect(filter);filter.connect(gain);gain.connect(drumBus);
-  source.start(when);source.stop(when+duration+.01);voices.push(source);
+  source.start(when);source.stop(when+duration+.01);trackVoice(source);
 }
 function pulseBass(midi,when){
   const oscillator=audio.createOscillator(),filter=audio.createBiquadFilter(),gain=audio.createGain();
@@ -259,7 +273,7 @@ function pulseBass(midi,when){
   gain.gain.exponentialRampToValueAtTime(.13,when+.015);
   gain.gain.exponentialRampToValueAtTime(.0001,when+.21);
   oscillator.connect(filter);filter.connect(gain);gain.connect(drumBus);
-  oscillator.start(when);oscillator.stop(when+.23);voices.push(oscillator);
+  oscillator.start(when);oscillator.stop(when+.23);trackVoice(oscillator);
 }
 function scheduleTechno(when){
   const step=secondsPerBeat/2;
@@ -286,6 +300,10 @@ function stopVoices(){
   for(const osc of voices) {try{osc.stop()}catch{}}
   voices = [];
 }
+function trackVoice(source){
+  voices.push(source);
+  source.onended=()=>{const index=voices.indexOf(source);if(index>=0)voices.splice(index,1)};
+}
 function updateScore(){
   if(score>bestScore){
     bestScore=score;
@@ -294,8 +312,8 @@ function updateScore(){
   by('score').textContent = score;
   by('bestScore').textContent = bestScore;
   by('streak').textContent = streak;
-  by('found').textContent = Math.round(found / beats.length * 100) + '%';
-  by('progress').value = found / beats.length * 100;
+  by('found').textContent = Math.min(100,Math.round(found / beats.length * 100)) + '%';
+  by('progress').value = Math.min(100,found / beats.length * 100);
 }
 function say(text){
   by('feedback').textContent = text;
@@ -310,7 +328,7 @@ async function begin(replay = false){
     by('phase').textContent = 'Audio unavailable · try starting again'; return;
   }
   stopVoices();
-  notes = [];bursts.length=0;
+  notes = [];bursts.length=0;boardNumber=0;nextBoardToSchedule=0;
   if (!replay) {score=0;streak=0;found=0;sung=[];takeHarmony=by('harmony').value;updateScore()}
   if(replay)by('harmony').value=takeHarmony;
   reconstruction = 0;
@@ -333,21 +351,22 @@ async function begin(replay = false){
   by('hint').textContent = replay ? 'Listening to your duet…' : '';
   by('feedback').textContent = '';
   if (!replay) for (const n of [3,2,1]) voice(73,audioZero+lead-n*secondsPerBeat/2,.08,'cue');
-  scheduleTechno(audioZero+lead);
-  beats.forEach((_,i)=>{
-    notes.push({judged:false,lane:noteLanes[i]});
-    const duration = Math.max(.15,phrase[i][1] * secondsPerBeat * .96);
-    voice(melody[i],audioZero+bpmTime(i),duration,'lead',i);
-    if(replay && sung[i]){
-      whaleHarmony(melody[i],audioZero+bpmTime(i),duration);
-    }
+  scheduleBoard(0);
+}
+function scheduleBoard(round){
+  const boardStart=audioZero+lead+round*boardDuration;
+  scheduleTechno(boardStart);
+  beats.forEach((onset,i)=>{
+    const time=boardStart+onset*secondsPerBeat;
+    const lane=(noteLanes[i]+round)%4;
+    const duration=Math.max(.15,phrase[i][1]*secondsPerBeat*.96);
+    notes.push({judged:false,lane,time,pitch:melody[i],duration,board:round});
+    voice(melody[i],time,duration,'lead',i+round);
   });
+  nextBoardToSchedule=round+1;
 }
 function targetProgress(){
-  if(mode === 'replay' || (mode === 'paused' && pausedMode === 'replay')){
-    return sung.reduce((count,hit,i)=>count + (hit && songTime() >= bpmTime(i) ? 1 : 0),0) / beats.length;
-  }
-  return found / beats.length;
+  return Math.min(1,found / beats.length);
 }
 async function togglePause(){
   by('pause').disabled = true;
@@ -375,22 +394,23 @@ function harmonize(lane){
   laneFlashes[lane]=performance.now()+170;
   const t=songTime();
   if(t < lead - hitWindow) return;
-  let closest=-1, delta=hitWindow;
-  notes.forEach((n,i)=>{
-    const distance=Math.abs(t-bpmTime(i));
-    if(!n.judged && n.lane===lane && distance<=delta){closest=i;delta=distance}
+  let closest=null, delta=hitWindow;
+  notes.forEach(n=>{
+    const distance=Math.abs(t-(n.time-audioZero));
+    if(!n.judged && n.lane===lane && distance<=delta){closest=n;delta=distance}
   });
-  if(closest<0){streak=0;updateScore();say('Off beat');return}
-  notes[closest].judged=true;
-  sung[closest]=true; found++; streak++; score+=delta<=.085 ? 100 : 60;
-  const pitch=audio?whaleHarmony(melody[closest],audio.currentTime,phrase[closest][1]*secondsPerBeat):'';
+  if(!closest){streak=0;updateScore();say('Off beat');return}
+  closest.judged=true;
+  correctFlashes[lane]=performance.now()+440;
+  found++; streak++; score+=delta<=.085 ? 100 : 60;
+  const pitch=audio?whaleHarmony(closest.pitch,audio.currentTime,closest.duration):'';
   flashUntil=performance.now()+195;
   bursts.push({lane,born:performance.now()});
   say((delta<=.085?'Perfect':'In tune')+' · '+pitch);
   updateScore();
 }
-by('start').onclick=()=>begin();
-by('restart').onclick=()=>begin();
+by('start').onclick=()=>startExploring();
+by('restart').onclick=()=>(mode==='explore'||mode==='dead')?startExploring():begin();
 by('listen').onclick=()=>begin(true);
 document.querySelectorAll('.pad').forEach((button,lane)=>{
   button.onpointerdown=event=>{event.preventDefault();harmonize(lane)};
@@ -402,7 +422,7 @@ document.addEventListener('keydown',event=>{
   if(event.code==='Escape'){by('settings').hidden=true;return}
   if(event.code==='Space' && !event.target.closest('button')){
     event.preventDefault();
-    if(mode==='idle'||mode==='done')begin();
+    if(mode==='idle'||mode==='done')startExploring();
     else if(mode==='play'||mode==='replay'||mode==='paused')togglePause();
   }
 });
@@ -420,30 +440,24 @@ by('sound').onclick=()=>{
 function gameFrame(now){
   const t=songTime();
   if(mode==='play'||mode==='replay'){
-    by('phase').textContent=mode==='replay'?'Your chorus':t<lead?'Ready · '+Math.max(1,Math.ceil((lead-t)/(secondsPerBeat/2))):'Follow the echoes';
-    notes.forEach((note,i)=>{
-      const until=bpmTime(i)-t;
+    const nextStart=lead+nextBoardToSchedule*boardDuration;
+    if(t>=nextStart-2.7)scheduleBoard(nextBoardToSchedule);
+    boardNumber=Math.max(1,Math.floor(Math.max(0,t-lead)/boardDuration)+1);
+    by('phase').textContent=t<lead?'Ready · '+Math.max(1,Math.ceil((lead-t)/(secondsPerBeat/2))):'Board '+boardNumber+' · Follow the echoes';
+    notes.forEach(note=>{
+      const until=(note.time-audioZero)-t;
       if(mode==='play'&&!note.judged&&until < -hitWindow){
         note.judged=true;streak=0;updateScore();say('Missed');
       }
     });
-    if(t>endTime+.9){
-      mode='done';by('harmony').disabled=false;
-      by('phase').textContent=found===beats.length?'The chorus returns':'Song complete';
-      document.querySelectorAll('.pad').forEach(button=>{button.disabled=true});
-      by('pause').disabled=true;by('listen').hidden=found===0;
-      by('start').textContent='Play again';
-      by('hint').textContent=found+' / '+beats.length+' harmonies · '+Math.round(found/beats.length*100)+'% of the ocean restored';
-      by('overlay').hidden=false;
-      by('shareActions').hidden=false;
-      by('overlayTitle').textContent=found===beats.length?'The chorus returns.':'Keep listening.';
-    }
+    notes=notes.filter(note=>!note.judged||(note.time-audioZero)>t-2);
   }
   if(now>feedbackUntil)by('feedback').textContent='';
   for(let lane=0;lane<4;lane++){
     by('pad'+lane).classList.toggle('active',now<laneFlashes[lane]);
+    by('pad'+lane).classList.toggle('correct',now<correctFlashes[lane]);
   }
-  by('songProgress').value=(mode==='idle'||mode==='loading')?0:Math.max(0,Math.min(100,(t-lead)/(endTime-lead)*100));
+  by('songProgress').value=(mode==='idle'||mode==='loading')?0:Math.max(0,Math.min(100,((t-lead)%boardDuration)/boardDuration*100));
 }
 let width, height, angle, zoom, cameraY;
 const mesh = [];
@@ -710,8 +724,8 @@ function drawArena(now){
   }
   ctx.globalAlpha=1;
   if(active){
-    notes.forEach((note,i)=>{
-      const until=bpmTime(i)-t;
+    notes.forEach(note=>{
+      const until=(note.time-audioZero)-t;
       if(note.judged||until>2.7||until<-.16)return;
       const p=arenaPoint(note.lane,1-until/2.7);
       const size=Math.min(p.spacing*.57,68)*p.scale;
@@ -808,6 +822,201 @@ by('signupForm').addEventListener('submit',async event=>{
   }finally{button.disabled=false}
 });
 
-function frame(now){gameFrame(now);draw(now);drawArena(now);requestAnimationFrame(frame)}
+// Exploration is a separate phase; the original four-lane game is preserved intact.
+const exploreCanvas=by('explore'), ec=exploreCanvas.getContext('2d');
+let swimmer={x:.27,y:.61}, others=[], exploreLast=0, steerTarget=null;
+let huntingBoats=[], huntStart=0, whaleDead=false;
+
+const held=new Set();
+// Hand-traced, stylized coastline proportions based on the supplied relief-map reference.
+// Westfjords are deliberately jagged; north and east include their characteristic fjords.
+const coast=[
+[.115,.405],[.145,.386],[.132,.354],[.166,.361],[.153,.328],[.190,.342],[.171,.300],[.210,.317],[.193,.273],[.228,.299],[.222,.254],[.251,.276],[.245,.229],[.270,.251],[.286,.224],[.300,.259],[.319,.245],[.326,.291],[.344,.303],[.320,.331],[.342,.353],[.308,.373],[.336,.397],[.301,.420],[.325,.447],[.290,.463],[.307,.492],[.273,.484],[.251,.515],[.226,.505],[.201,.525],[.184,.509],[.151,.521],[.142,.553],[.180,.566],[.201,.552],[.223,.576],[.258,.564],[.278,.592],[.304,.582],[.317,.618],[.347,.637],[.373,.665],[.402,.691],[.449,.713],[.490,.733],[.538,.753],[.575,.759],[.612,.743],[.638,.717],[.671,.706],[.690,.675],[.723,.655],[.747,.626],[.768,.603],[.798,.585],[.819,.560],[.846,.548],[.836,.525],[.870,.515],[.844,.494],[.878,.479],[.850,.465],[.873,.443],[.841,.432],[.850,.408],[.823,.400],[.839,.372],[.812,.379],[.801,.354],[.779,.372],[.764,.349],[.748,.366],[.731,.343],[.720,.318],[.699,.338],[.689,.298],[.670,.316],[.653,.279],[.637,.310],[.618,.286],[.609,.315],[.584,.287],[.572,.320],[.550,.299],[.535,.324],[.511,.290],[.495,.319],[.472,.294],[.452,.327],[.433,.303],[.418,.338],[.398,.322],[.387,.360],[.369,.347],[.364,.386],[.347,.405],[.360,.449],[.345,.477],[.365,.506],[.354,.543],[.378,.565],[.395,.601],[.354,.575],[.334,.540],[.311,.526],[.324,.491],[.337,.466],[.322,.438],[.343,.411]];
+function startExploring(){
+  mode='explore'; swimmer={x:.23,y:.72};steerTarget=null;whaleDead=false;huntStart=performance.now();exploreLast=0;
+  huntingBoats=[{x:.90,y:.83,heading:Math.PI,phase:0},{x:.08,y:.19,heading:.4,phase:2.4}];
+  others=[{x:.14,y:.64},{x:.77,y:.69},{x:.82,y:.31},{x:.45,y:.79}].map((w,i)=>({...w,phase:i*1.7,met:false}));
+  exploreCanvas.hidden=false;by('exploreHud').hidden=false;document.body.classList.add('exploring');
+  by('overlay').hidden=true;by('restart').disabled=false;by('pause').disabled=true;
+  by('phase').textContent='Explore Iceland · Avoid hunting boats';
+  by('exploreHud').innerHTML='ICELAND · NORTH ATLANTIC<br>Steer with arrow keys / WASD, or drag on the ocean.<br><strong>Escape hunting boats. Meet another whale to begin the chorus.</strong>';
+}
+function meetWhale(w){
+  w.met=true;exploreCanvas.hidden=true;by('exploreHud').hidden=true;document.body.classList.remove('exploring');
+  by('phase').textContent='Whale encounter · The chorus begins';
+  begin();
+}
+function drawHuntingBoat(c,x,y,heading,scale,now){
+  c.save();c.translate(x,y);c.rotate(heading);c.scale(scale,scale);
+  // A moving wake, hull, wheelhouse, deck and mast in top-down perspective.
+  c.fillStyle='#b3e6ed24';
+  for(let i=0;i<3;i++){
+    const wave=Math.sin(now*.005+i)*2;
+    c.beginPath();c.ellipse(-31-i*12,wave,24+i*8,7+i*3,0,0,Math.PI*2);c.fill();
+  }
+  c.fillStyle='#091c2b';c.strokeStyle='#f2f1e7';c.lineWidth=1.8;
+  c.beginPath();c.moveTo(29,0);c.quadraticCurveTo(17,-12,-18,-11);c.lineTo(-26,-7);c.lineTo(-26,7);c.lineTo(-18,11);c.quadraticCurveTo(17,12,29,0);c.closePath();c.fill();c.stroke();
+  c.fillStyle='#d5a74e';c.fillRect(-18,-9,27,3);c.fillRect(-18,6,27,3);
+  c.fillStyle='#e7e9e3';c.fillRect(-5,-7,14,14);
+  c.fillStyle='#406b80';c.fillRect(3,-5,5,10);
+  c.strokeStyle='#d8e4df';c.lineWidth=1.3;c.beginPath();c.moveTo(-11,0);c.lineTo(-11,-18);c.stroke();
+  c.fillStyle='#f0c58b';c.beginPath();c.arc(-11,-18,2.3,0,Math.PI*2);c.fill();
+  c.restore();
+}
+function endWhaleHunt(){
+  if(whaleDead||mode!=='explore')return;
+  whaleDead=true;mode='dead';held.clear();steerTarget=null;
+  exploreCanvas.hidden=true;by('exploreHud').hidden=true;document.body.classList.remove('exploring');
+  by('overlay').hidden=false;by('overlayTitle').innerHTML='The ocean<br>falls silent';
+  by('hint').innerHTML='A hunting boat caught your whale.<br>Try again and reach another whale safely.';
+  by('start').textContent='Try again';by('phase').textContent='Whale lost · Escape the boats';
+  by('start').onclick=()=>startExploring();
+}
+function drawWhale(c,x,y,scale,heading,color,now){
+  // Animated humpback: long knobbly flippers, pale ventral grooves and flexible flukes.
+  const kick=Math.sin(now*.0048+x*.013), fin=Math.sin(now*.0036+y*.01);
+  c.save();c.translate(x,y);c.rotate(heading);c.scale(scale,scale);
+  // Tail peduncle and animated flukes (nose points right).
+  c.save();c.translate(-25,0);c.rotate(kick*.17);
+  c.fillStyle='#263e4c';c.beginPath();c.moveTo(5,-5);c.quadraticCurveTo(-14,-4,-25,0);c.quadraticCurveTo(-37,-15,-48,-16);c.quadraticCurveTo(-46,-4,-35,0);c.quadraticCurveTo(-47,6,-49,17);c.quadraticCurveTo(-32,13,-24,2);c.lineTo(5,5);c.fill();c.restore();
+  // Far pectoral fin.
+  c.save();c.translate(2,-5);c.rotate(-.10+fin*.13);
+  c.fillStyle='#344b57';c.beginPath();c.moveTo(-5,0);c.quadraticCurveTo(-12,-13,-19,-28);c.quadraticCurveTo(-22,-36,-16,-35);c.quadraticCurveTo(-4,-23,10,-5);c.fill();c.restore();
+  const body=c.createLinearGradient(0,-13,0,14);
+  body.addColorStop(0,'#526c79');body.addColorStop(.32,color);body.addColorStop(.68,'#243c49');body.addColorStop(1,'#c0d0cd');
+  c.fillStyle=body;c.beginPath();c.moveTo(-28,0);c.bezierCurveTo(-23,-12,-7,-15,14,-12);c.bezierCurveTo(26,-11,35,-6,37,-2);c.quadraticCurveTo(39,5,28,8);c.bezierCurveTo(5,15,-17,12,-28,0);c.fill();
+  // Humpback dorsal fin.
+  c.fillStyle='#233b48';c.beginPath();c.moveTo(-9,-11);c.lineTo(-15,-17);c.quadraticCurveTo(-8,-17,-3,-12);c.fill();
+  // Pale throat grooves.
+  c.strokeStyle='rgba(224,235,229,.57)';c.lineWidth=.75;
+  for(let i=0;i<4;i++){c.beginPath();c.moveTo(11+i*4,5);c.quadraticCurveTo(20+i*2,9,30+i,5);c.stroke()}
+  // Near long pectoral fin with white mottled trailing edge.
+  c.save();c.translate(1,6);c.rotate(fin*.17);
+  c.fillStyle='#364b55';c.beginPath();c.moveTo(-8,-1);c.quadraticCurveTo(-11,10,-6,23);c.quadraticCurveTo(0,37,9,40);c.quadraticCurveTo(13,39,10,34);c.quadraticCurveTo(6,22,13,3);c.closePath();c.fill();
+  c.strokeStyle='#c9d6d1';c.lineWidth=2;c.beginPath();c.moveTo(-5,15);c.quadraticCurveTo(0,33,10,38);c.stroke();
+  c.fillStyle='#e4e6df';for(let i=0;i<8;i++){const t=i/7;c.beginPath();c.arc(-3+t*12,17+t*19,1.1,0,7);c.fill()}
+  c.restore();
+  // Rostrum tubercles and eye.
+  c.fillStyle='#c6d7d5';for(let i=0;i<6;i++){c.beginPath();c.arc(29+i*1.1,-6+(i%2)*2,.85,0,7);c.fill()}
+  c.fillStyle='#07141d';c.beginPath();c.arc(23,-4,1.7,0,7);c.fill();
+  c.fillStyle='#e1f1ec';c.beginPath();c.arc(23.4,-4.5,.48,0,7);c.fill();
+  c.restore();
+}
+// Cache static seabed artwork: rebuild only on resize, never every animation frame.
+const seabed=document.createElement('canvas'), seabedCtx=seabed.getContext('2d');
+let seabedW=0,seabedH=0,whaleHeading=0;
+function paintSeabed(w,h){
+  seabed.width=w;seabed.height=h;seabedW=w;seabedH=h;
+  const c=seabedCtx;
+  let g=c.createLinearGradient(0,0,0,h);
+  g.addColorStop(0,'#092d40');g.addColorStop(.38,'#062235');g.addColorStop(1,'#010a17');c.fillStyle=g;c.fillRect(0,0,w,h);
+  // Wide, dark patches give the impression of deep underwater canyons.
+  for(const [x,y,r,alpha] of [[.13,.20,.42,.6],[.87,.72,.55,.72],[.39,.92,.46,.67],[.93,.12,.34,.44]]){
+    const rad=Math.max(w,h)*r;
+    const v=c.createRadialGradient(x*w,y*h,0,x*w,y*h,rad);
+    v.addColorStop(0,`rgba(0,3,13,${alpha})`);v.addColorStop(1,'rgba(0,3,13,0)');
+    c.fillStyle=v;c.fillRect(0,0,w,h);
+  }
+  // Submerged Iceland: dark relief with a soft underwater rim.
+  c.beginPath();coast.forEach(([x,y],i)=>i?c.lineTo(x*w,y*h):c.moveTo(x*w,y*h));c.closePath();
+  c.shadowColor='#000611';c.shadowBlur=48;c.shadowOffsetY=30;
+  c.fillStyle='#071721';c.fill();c.shadowBlur=0;c.shadowOffsetY=0;
+  // Extruded coastline wall: land rises visibly above the dark water.
+  c.save();c.translate(0,12);c.fillStyle='#0a2530';c.fill();c.restore();
+  c.strokeStyle='#b8d4ca99';c.lineWidth=3;c.stroke();
+  c.save();c.clip();
+  const land=c.createLinearGradient(0,h*.25,0,h*.7);
+  land.addColorStop(0,'#b2b6a5');land.addColorStop(.45,'#657c77');land.addColorStop(1,'#2d4d51');c.fillStyle=land;c.fillRect(0,0,w,h);
+  // Layered relief: nested topographic ridges, glacier caps, and etched contour lines.
+  // All terrain is drawn once into the cached seabed canvas, not each frame.
+  const peaks=[[.27,.34,.085,.11],[.41,.48,.095,.13],[.52,.40,.085,.13],[.60,.48,.12,.17],[.72,.43,.10,.14],[.76,.55,.085,.12],[.51,.60,.13,.085],[.63,.65,.13,.08],[.36,.57,.07,.08]];
+  for(const [px,py,rx,ry] of peaks){
+    for(let layer=10;layer>=1;layer--){
+      const t=layer/10;
+      c.beginPath();
+      for(let j=0;j<=90;j++){
+        const theta=j/90*Math.PI*2;
+        const ripple=1+.09*Math.sin(theta*7+px*41)+.065*Math.sin(theta*13+py*39);
+        const x=w*(px+rx*t*ripple*Math.cos(theta));
+        const y=h*(py+ry*t*ripple*Math.sin(theta));
+        j?c.lineTo(x,y):c.moveTo(x,y);
+      }
+      c.closePath();
+      c.fillStyle=layer<3?'rgba(242,237,216,.38)':layer<6?'rgba(187,199,184,.28)':'rgba(25,49,57,.22)';
+      c.fill();c.strokeStyle=layer%2?'rgba(252,247,223,.48)':'rgba(3,14,25,.36)';
+      c.lineWidth=Math.max(.65,w/1600);c.stroke();
+    }
+  }
+  // Southern glacier plateau, inspired by Vatnajökull on the reference.
+  c.beginPath();c.ellipse(w*.647,h*.605,w*.103,h*.061,-.15,0,Math.PI*2);
+  c.fillStyle='rgba(237,242,230,.62)';c.fill();
+  c.strokeStyle='rgba(255,255,244,.72)';c.lineWidth=1.5;c.stroke();
+  c.restore();
+  c.textAlign='center';c.fillStyle='#a5c9ccaa';c.font=`${Math.max(13,Math.min(23,w*.024))}px Georgia`;c.fillText('I C E L A N D',w*.53,h*.53);
+  c.font='11px system-ui';c.fillStyle='#7aa2b499';c.fillText('NORTH ATLANTIC OCEAN',w*.50,h*.88);
+  // Vignette creates dark peripheral shadows without per-frame gradients.
+  const vignette=c.createRadialGradient(w*.48,h*.44,Math.min(w,h)*.12,w*.5,h*.5,Math.max(w,h)*.78);
+  vignette.addColorStop(0,'#00000000');vignette.addColorStop(1,'#000b18bb');c.fillStyle=vignette;c.fillRect(0,0,w,h);
+}
+function renderExplore(now){
+  if(mode!=='explore')return;
+  // DPR capped for stable high FPS on phones and high-density displays.
+  const dpr=Math.min(devicePixelRatio||1,1.5),w=exploreCanvas.clientWidth,h=exploreCanvas.clientHeight;
+  const pw=Math.round(w*dpr),ph=Math.round(h*dpr);
+  if(exploreCanvas.width!==pw||exploreCanvas.height!==ph){exploreCanvas.width=pw;exploreCanvas.height=ph}
+  ec.setTransform(dpr,0,0,dpr,0,0);
+  if(seabedW!==pw||seabedH!==ph)paintSeabed(pw,ph);
+  ec.drawImage(seabed,0,0,w,h);
+  // Slow moving shafts of filtered light and drifting suspended particles.
+  ec.save();ec.globalCompositeOperation='screen';
+  for(let i=0;i<5;i++){
+    const x=(i*.27+.07+Math.sin(now*.00014+i)*.035)*w;
+    ec.beginPath();ec.moveTo(x-w*.035,0);ec.lineTo(x+w*.04,0);
+    ec.lineTo(x+w*.21,h);ec.lineTo(x+w*.08,h);ec.closePath();
+    ec.fillStyle='rgba(40,128,155,.025)';ec.fill();
+  }
+  ec.restore();
+  ec.fillStyle='#9acbd044';
+  for(let i=0;i<42;i++){
+    const x=((i*0.61803398875+now*.000004*(1+i%3))%1)*w;
+    const y=((i*.754877666+now*.000008*(1+i%4))%1)*h;
+    ec.fillRect(x,y,i%5===0?2:1,i%5===0?2:1);
+  }
+  const dt=Math.min(.05,(now-exploreLast)/1000||0);exploreLast=now;
+  let dx=(held.has('ArrowRight')||held.has('KeyD')?1:0)-(held.has('ArrowLeft')||held.has('KeyA')?1:0);
+  let dy=(held.has('ArrowDown')||held.has('KeyS')?1:0)-(held.has('ArrowUp')||held.has('KeyW')?1:0);
+  if(steerTarget){dx=steerTarget.x-swimmer.x;dy=steerTarget.y-swimmer.y;if(Math.hypot(dx,dy)<.015)steerTarget=null}
+  const length=Math.hypot(dx,dy);
+  if(length){swimmer.x=Math.max(.045,Math.min(.955,swimmer.x+dx/length*dt*.16));swimmer.y=Math.max(.14,Math.min(.93,swimmer.y+dy/length*dt*.16));whaleHeading=Math.atan2(dy,dx)}
+  for(const o of others){
+    const x=o.x+Math.sin(now*.00055+o.phase)*.025,y=o.y+Math.cos(now*.00045+o.phase)*.018;
+    // Faint silhouette and small bioluminescent glow, not expensive blur filters.
+    drawWhale(ec,x*w,y*h,Math.max(.55,Math.min(1,w/1100)),Math.sin(now*.0006+o.phase)*.5,'#568e9b',now);
+    if(!o.met&&Math.hypot((swimmer.x-x)*w,(swimmer.y-y)*h)<45){meetWhale(o);return}
+  }
+  // Boats enter from the edges and gradually pursue the whale; no costly physics engine.
+  const elapsed=(now-huntStart)/1000;
+  for(const [i,b] of huntingBoats.entries()){
+    const vx=(swimmer.x-b.x)*w,vy=(swimmer.y-b.y)*h;
+    const distance=Math.hypot(vx,vy)||1;
+    const patrolAngle=elapsed*.35+b.phase;
+    const targetAngle=elapsed>3?Math.atan2(vy,vx):patrolAngle;
+    const diff=Math.atan2(Math.sin(targetAngle-b.heading),Math.cos(targetAngle-b.heading));
+    b.heading+=Math.max(-dt*1.2,Math.min(dt*1.2,diff));
+    const speed=(elapsed>3?.065:.035)*(i===1?.86:1);
+    b.x+=Math.cos(b.heading)*speed*dt;
+    b.y+=Math.sin(b.heading)*speed*dt*(w/h);
+    b.x=Math.max(.018,Math.min(.982,b.x));b.y=Math.max(.06,Math.min(.96,b.y));
+    drawHuntingBoat(ec,b.x*w,b.y*h,b.heading,Math.max(.75,Math.min(1.2,w/950)),now);
+    if(elapsed>2.5&&distance<Math.max(26,Math.min(43,w*.038))){endWhaleHunt();return}
+  }
+  drawWhale(ec,swimmer.x*w,swimmer.y*h,Math.max(.7,Math.min(1.25,w/850)),whaleHeading,'#7bb9ba',now);
+  ec.textAlign='left';ec.font='12px system-ui';ec.fillStyle='#c0e9e6';ec.fillText('YOUR WHALE',swimmer.x*w+25,swimmer.y*h-22);
+}
+window.addEventListener('keydown',e=>{if(mode==='explore'&&['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','KeyW','KeyA','KeyS','KeyD'].includes(e.code)){e.preventDefault();held.add(e.code)}},true);
+window.addEventListener('keyup',e=>held.delete(e.code));
+exploreCanvas.addEventListener('pointerdown',e=>{if(mode==='explore'){exploreCanvas.setPointerCapture(e.pointerId);steerTarget={x:e.clientX/innerWidth,y:e.clientY/innerHeight}}});
+exploreCanvas.addEventListener('pointermove',e=>{if(mode==='explore'&&e.buttons)steerTarget={x:e.clientX/innerWidth,y:e.clientY/innerHeight}});
+function frame(now){gameFrame(now);draw(now);drawArena(now);renderExplore(now);requestAnimationFrame(frame)}
 requestAnimationFrame(frame);
 </script></body></html>
